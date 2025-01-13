@@ -1,0 +1,14 @@
+body {
+	font-family: "Brush Script MT", Helvetica, sans-serif;
+	line-height: 1.6;
+	margin: 20px;
+	text-align: center;
+}
+
+#worksheet {
+	margin-top: 20px;
+}
+
+p {
+	margin: 10px 0;
+}
