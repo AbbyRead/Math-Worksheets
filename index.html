@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LaTeX Code Generator</title>
+  <title>LaTeX Code Generator with Math Problems</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -29,10 +29,13 @@
     button:hover {
       background: #0056b3;
     }
+    #problemContainer {
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
-  <h1>LaTeX Code Generator</h1>
+  <h1>LaTeX Code Generator with Math Problems</h1>
   <form id="latexForm" target="_blank" action="https://www.overleaf.com/docs" method="post">
     <label for="title">Document Title:</label>
     <input type="text" id="title" name="title" placeholder="Enter a title">
@@ -43,6 +46,11 @@
     <label for="content">Custom Content:</label>
     <textarea id="content" name="content" placeholder="Enter your content"></textarea>
 
+    <label for="numProblems">Number of Math Problems:</label>
+    <input type="number" id="numProblems" name="numProblems" min="1" max="10" value="5">
+
+    <div id="problemContainer"></div>
+
     <textarea id="latexOutput" name="snip" style="display: none;"></textarea>
 
     <button type="button" id="generateButton">Generate LaTeX</button>
@@ -50,12 +58,43 @@
   </form>
 
   <script>
+    // Random Math Problem Generator
+    function generateMathProblem() {
+      const operations = ['+', '-', '*', '/'];
+      const num1 = Math.floor(Math.random() * 10) + 1;  // Random number between 1 and 10
+      const num2 = Math.floor(Math.random() * 10) + 1;  // Random number between 1 and 10
+      const operation = operations[Math.floor(Math.random() * operations.length)];
+
+      // Format LaTeX problem (keeping division integers)
+      let problem = `${num1} ${operation} ${num2}`;
+      if (operation === '/') {
+        // Ensure the result is an integer for division
+        const result = num1 * num2;
+        problem = `${result} \\div ${num2}`;  // Division will show as an integer
+      }
+	  if (operation === '*') {
+		// use the multiplication cross symbol
+		problem = `${num1} \\times ${num2}`;
+	  }
+
+      return problem;
+    }
+
+    // Event listener for generating LaTeX code
     document.getElementById("generateButton").addEventListener("click", function () {
       const title = document.getElementById("title").value.trim();
       const author = document.getElementById("author").value.trim();
       const content = document.getElementById("content").value.trim();
+      const numProblems = parseInt(document.getElementById("numProblems").value);
 
-      // Basic LaTeX template
+      // Generate math problems
+      let mathProblems = '';
+      for (let i = 0; i < numProblems; i++) {
+        const problem = generateMathProblem();
+        mathProblems += `\\textbf{Problem ${i + 1}:} Solve: $${problem}$ \\\\ \n`;
+      }
+
+      // LaTeX template with math problems
       const latexTemplate = `
 \\documentclass{article}
 \\title{${title || "Untitled"}}
@@ -63,13 +102,15 @@
 \\begin{document}
 \\maketitle
 ${content || "This is an example document."}
+\\section*{Math Problems}
+${mathProblems}
 \\end{document}
       `;
 
       // Show the LaTeX code (optional)
       alert("LaTeX Code Generated:\n" + latexTemplate);
 
-      // Populate the hidden textarea
+      // Populate the hidden textarea with LaTeX code
       document.getElementById("latexOutput").value = latexTemplate;
 
       // Enable the submit button
