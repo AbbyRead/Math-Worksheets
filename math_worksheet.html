@@ -69,8 +69,8 @@
         // Generate LaTeX formatted output
         latexCode = `\\documentclass{article}\n\\usepackage{amsmath}\n\\begin{document}\n${userInput}\n\\end{document}`;
 
-        // Update the output field with the LaTeX code
-        output.textContent = latexCode;
+        // Update the output field with the LaTeX code (with preserved newlines)
+        output.innerHTML = latexCode.replace(/\n/g, '<br>'); // Replace \n with <br> for HTML output
     }
 
     // Add a fraction to the text input
