@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time LaTeX Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #output {
+            font-family: "Courier New", monospace;
+            white-space: pre-wrap;
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            width: 100%;
+            min-height: 200px;
+            margin-top: 20px;
+        }
+        .input-container {
+            margin-bottom: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .switch {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Real-time LaTeX Code Generator</h1>
+
+<div class="input-container">
+    <label for="inputText">Enter text to generate LaTeX code:</label>
+    <textarea id="inputText" rows="4"></textarea>
+</div>
+
+<div class="input-container">
+    <label>Toggle Options:</label><br>
+    <input type="checkbox" class="switch" id="boldToggle"> Bold<br>
+    <input type="checkbox" class="switch" id="italicToggle"> Italic
+</div>
+
+<div id="output">
+    <!-- LaTeX code will appear here -->
+</div>
+
+<script>
+    const inputText = document.getElementById('inputText');
+    const boldToggle = document.getElementById('boldToggle');
+    const italicToggle = document.getElementById('italicToggle');
+    const output = document.getElementById('output');
+
+    // Update the LaTeX code in the output area
+    function updateOutput() {
+        let latexCode = '';
+
+        // Get the text from the input
+        let userInput = inputText.value;
+
+        // Check if bold toggle is active
+        if (boldToggle.checked) {
+            userInput = '\\textbf{' + userInput + '}';
+        }
+
+        // Check if italic toggle is active
+        if (italicToggle.checked) {
+            userInput = '\\textit{' + userInput + '}';
+        }
+
+        // Generate LaTeX formatted output
+        latexCode = `\\documentclass{article}\n\\begin{document}\n${userInput}\n\\end{document}`;
+
+        // Update the output field with the LaTeX code
+        output.textContent = latexCode;
+    }
+
+    // Attach event listeners
+    inputText.addEventListener('input', updateOutput);
+    boldToggle.addEventListener('change', updateOutput);
+    italicToggle.addEventListener('change', updateOutput);
+
+</script>
+
+</body>
+</html>

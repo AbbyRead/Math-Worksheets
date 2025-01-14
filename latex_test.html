@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LaTeX Code Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>LaTeX Code Generator</h1>
+  <form id="latexForm" target="_blank" action="https://www.overleaf.com/docs" method="post">
+    <label for="title">Document Title:</label>
+    <input type="text" id="title" name="title" placeholder="Enter a title">
+
+    <label for="author">Author Name:</label>
+    <input type="text" id="author" name="author" placeholder="Enter an author name">
+
+    <label for="content">Custom Content:</label>
+    <textarea id="content" name="content" placeholder="Enter your content"></textarea>
+
+    <textarea id="latexOutput" name="snip" style="display: none;"></textarea>
+
+    <button type="button" id="generateButton">Generate LaTeX</button>
+    <button type="submit" id="submitButton" disabled>Open in Overleaf</button>
+  </form>
+
+  <script>
+    document.getElementById("generateButton").addEventListener("click", function () {
+      const title = document.getElementById("title").value.trim();
+      const author = document.getElementById("author").value.trim();
+      const content = document.getElementById("content").value.trim();
+
+      // Basic LaTeX template
+      const latexTemplate = `
+\\documentclass{article}
+\\title{${title || "Untitled"}}
+\\author{${author || "Anonymous"}}
+\\begin{document}
+\\maketitle
+${content || "This is an example document."}
+\\end{document}
+      `;
+
+      // Show the LaTeX code (optional)
+      alert("LaTeX Code Generated:\n" + latexTemplate);
+
+      // Populate the hidden textarea
+      document.getElementById("latexOutput").value = latexTemplate;
+
+      // Enable the submit button
+      document.getElementById("submitButton").disabled = false;
+    });
+  </script>
+</body>
+</html>
