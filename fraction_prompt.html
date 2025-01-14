@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Worksheet LaTeX Generator</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Math Worksheet LaTeX Generator</h1>
+        <textarea id="latex-code" rows="5" placeholder="Generated LaTeX will appear here..."></textarea>
+        <div class="button-row">
+            <button id="fraction-button">Fraction</button>
+        </div>
+        <div id="fraction-inputs" class="fraction-inputs hidden">
+            <label>
+                Numerator: 
+                <input type="text" id="numerator-input">
+            </label>
+            <label>
+                Denominator: 
+                <input type="text" id="denominator-input">
+            </label>
+            <button id="confirm-fraction">Add Fraction</button>
+        </div>
+        <div id="preview-container">
+            <h2>LaTeX Preview:</h2>
+            <pre id="latex-preview"></pre>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
