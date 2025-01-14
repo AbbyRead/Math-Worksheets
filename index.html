@@ -3,66 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LaTeX Worksheet Generator</title>
-  <script src="https://cdn.jsdelivr.net/gh/manuels/texlive.js/texlive.js"></script>
+  <title>LaTeX Code Generator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
-      max-width: 800px;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
     }
     textarea {
       width: 100%;
-      height: 300px;
-      margin-bottom: 15px;
-      font-family: monospace;
+      height: 150px;
     }
     button {
-      padding: 10px 20px;
-      font-size: 16px;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #007BFF;
+      color: white;
+      border: none;
       cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>LaTeX Worksheet Generator</h1>
-  <p>Type your LaTeX code below and click "Generate PDF" to create a worksheet:</p>
-  <textarea id="latexInput">\documentclass{article}
-\usepackage{amsmath}
-\begin{document}
-\section*{Math Worksheet}
-Solve the following equations:
-\[
-x^2 + 3x + 2 = 0
-\]
-\[
-\int_0^1 x^2 \,dx
-\]
-\end{document}</textarea>
-  <br>
-  <button id="compileButton">Generate PDF</button>
-  <p id="outputMessage"></p>
+  <h1>LaTeX Code Generator</h1>
+  <form id="latexForm" target="_blank" action="https://www.overleaf.com/docs" method="post">
+    <label for="title">Document Title:</label>
+    <input type="text" id="title" name="title" placeholder="Enter a title">
+
+    <label for="author">Author Name:</label>
+    <input type="text" id="author" name="author" placeholder="Enter an author name">
+
+    <label for="content">Custom Content:</label>
+    <textarea id="content" name="content" placeholder="Enter your content"></textarea>
+
+    <textarea id="latexOutput" name="snip" style="display: none;"></textarea>
+
+    <button type="button" id="generateButton">Generate LaTeX</button>
+    <button type="submit" id="submitButton" disabled>Open in Overleaf</button>
+  </form>
+
   <script>
-    document.getElementById('compileButton').addEventListener('click', async () => {
-      const input = document.getElementById('latexInput').value;
-      const outputMessage = document.getElementById('outputMessage');
+    document.getElementById("generateButton").addEventListener("click", function () {
+      const title = document.getElementById("title").value.trim();
+      const author = document.getElementById("author").value.trim();
+      const content = document.getElementById("content").value.trim();
 
-      try {
-        // Load TeXLive.js and compile the LaTeX code
-        const tex = await TeXLive();
-        const pdf = tex.compile(input);
+      // Basic LaTeX template
+      const latexTemplate = `
+\\documentclass{article}
+\\title{${title || "Untitled"}}
+\\author{${author || "Anonymous"}}
+\\begin{document}
+\\maketitle
+${content || "This is an example document."}
+\\end{document}
+      `;
 
-        // Create a Blob for the PDF and a downloadable link
-        const blob = new Blob([pdf], { type: 'application/pdf' });
-        const url = URL.createObjectURL(blob);
+      // Show the LaTeX code (optional)
+      alert("LaTeX Code Generated:\n" + latexTemplate);
 
-        // Display a link for the user to download the PDF
-        outputMessage.innerHTML = `<a href="${url}" download="worksheet.pdf">Click here to download your PDF</a>`;
-      } catch (error) {
-        outputMessage.textContent = 'Error compiling LaTeX: ' + error.message;
-      }
+      // Populate the hidden textarea
+      document.getElementById("latexOutput").value = latexTemplate;
+
+      // Enable the submit button
+      document.getElementById("submitButton").disabled = false;
     });
   </script>
 </body>
 </html>
-<link rel="stylesheet" href="assets/style.css">
